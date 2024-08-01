@@ -70,6 +70,20 @@ app.post('/reset', async (req, res) => {
   res.send('Credentials updated successfully');
 });
 
+app.post('/addUser', async (req, res) => {
+  const { username, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newUser = new User({ username, password: hashedPassword });
+  await newUser.save();
+  res.send('User added successfully');
+});
+
+app.post('/removeUser', async (req, res) => {
+  const { username } = req.body;
+  await User.findOneAndDelete({ username });
+  res.send('User removed successfully');
+});
+
 app.post('/data', async (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
   try {
