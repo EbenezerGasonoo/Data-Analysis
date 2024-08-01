@@ -1,0 +1,16 @@
+### Add New User
+POST http://localhost:5000/addUser
+Content-Type: application/json
+
+{
+  "username": "Nomakk",
+  "password": "nomak"
+}
+
+### Remove Existing User
+POST http://localhost:5000/removeUser
+Content-Type: application/json
+
+{
+  "username": "Nomak"
+}
