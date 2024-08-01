@@ -1,4 +1,4 @@
-### Add New User
+### Add a User
 POST http://localhost:5000/addUser
 Content-Type: application/json
 
@@ -7,10 +7,34 @@ Content-Type: application/json
   "password": "nomak"
 }
 
-### Remove Existing User
+### Remove a User
 POST http://localhost:5000/removeUser
 Content-Type: application/json
 
 {
   "username": "Nomak"
 }
+
+### Login
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "username": "Nomakk",
+  "password": "nomak"
+}
+
+### Add Production Data (Requires Authorization)
+POST http://localhost:5000/data
+Content-Type: application/json
+Authorization: Bearer {{YOUR_JWT_TOKEN}}
+
+{
+  "product": "Sample Product",
+  "date": "2024-08-01",
+  "quantity": 100
+}
+
+### Get Production Data (Requires Authorization)
+GET http://localhost:5000/data
+Authorization: Bearer {{YOUR_JWT_TOKEN}}

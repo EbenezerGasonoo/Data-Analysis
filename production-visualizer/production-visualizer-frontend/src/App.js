@@ -34,70 +34,31 @@ function App() {
   const [date, setDate] = useState('');
   const [quantity, setQuantity] = useState('');
   const [data, setData] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [filter, setFilter] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
-  const [showResetForm, setShowResetForm] = useState(false);
-  const [oldUsername, setOldUsername] = useState('');
-  const [oldPassword, setOldPassword] = useState('');
-  const [newUsername, setNewUsername] = useState('');
-  const [newPassword, setNewPassword] = useState('');
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const fetchData = async () => {
-        try {
-          const result = await axios.get(`${API_URL}/data`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setData(result.data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-      fetchData();
-    }
-  }, [isAuthenticated, token]);
+    fetchData();
+  }, []);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const fetchData = async () => {
     try {
-      const response = await axios.post(`${API_URL}/login`, { username, password });
-      setToken(response.data.token);
-      setIsAuthenticated(true);
-      toast.success('Login successful!');
+      const result = await axios.get(`${API_URL}/data`);
+      setData(result.data);
     } catch (error) {
-      console.error('Error logging in:', error);
-      toast.error('Login failed. Please check your credentials.');
+      console.error('Error fetching data:', error);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/data`, { product, date, quantity }, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.post(`${API_URL}/data`, { product, date, quantity });
       setData([...data, response.data]);
       toast.success('Data submitted successfully!');
     } catch (error) {
       console.error('Error submitting data:', error);
       toast.error('Failed to submit data.');
-    }
-  };
-
-  const handleReset = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post(`${API_URL}/reset`, { oldUsername, oldPassword, newUsername, newPassword });
-      toast.success('Credentials updated successfully!');
-      setShowResetForm(false);
-    } catch (error) {
-      console.error('Error resetting credentials:', error);
-      toast.error('Failed to reset credentials.');
     }
   };
 
@@ -150,9 +111,7 @@ function App() {
           }));
 
           for (const item of importedData) {
-            await axios.post(`${API_URL}/data`, item, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
+            await axios.post(`${API_URL}/data`, item);
           }
 
           setData([...data, ...importedData]);
@@ -188,103 +147,45 @@ function App() {
     <div className="App">
       <ToastContainer />
       <h1>Production Visualizer</h1>
-      {!isAuthenticated ? (
-        <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            placeholder="Username"
-            required
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
-          <button type="submit">Login</button>
-        </form>
-      ) : (
-        <>
-          <button onClick={() => setShowResetForm(!showResetForm)}>
-            {showResetForm ? 'Cancel' : 'Reset Credentials'}
-          </button>
-          {showResetForm && (
-            <form onSubmit={handleReset}>
-              <input
-                type="text"
-                value={oldUsername}
-                onChange={e => setOldUsername(e.target.value)}
-                placeholder="Old Username"
-                required
-              />
-              <input
-                type="password"
-                value={oldPassword}
-                onChange={e => setOldPassword(e.target.value)}
-                placeholder="Old Password"
-                required
-              />
-              <input
-                type="text"
-                value={newUsername}
-                onChange={e => setNewUsername(e.target.value)}
-                placeholder="New Username"
-                required
-              />
-              <input
-                type="password"
-                value={newPassword}
-                onChange={e => setNewPassword(e.target.value)}
-                placeholder="New Password"
-                required
-              />
-              <button type="submit">Submit</button>
-            </form>
-          )}
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              value={product}
-              onChange={e => setProduct(e.target.value)}
-              placeholder="Product"
-              required
-            />
-            <input
-              type="date"
-              value={date}
-              onChange={e => setDate(e.target.value)}
-              required
-            />
-            <input
-              type="number"
-              value={quantity}
-              onChange={e => setQuantity(e.target.value)}
-              placeholder="Quantity"
-              required
-            />
-            <button type="submit">Submit</button>
-          </form>
-          <div>
-            <label>Filter by product:</label>
-            <input
-              type="text"
-              value={filter}
-              onChange={handleFilterChange}
-            />
-            <label>Sort by date:</label>
-            <select value={sortOrder} onChange={handleSortChange}>
-              <option value="asc">Ascending</option>
-              <option value="desc">Descending</option>
-            </select>
-            <button onClick={exportDataToCSV}>Export to CSV</button>
-            <input type="file" accept=".csv" onChange={importDataFromCSV} />
-          </div>
-          <Line data={chartData} />
-        </>
-      )}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={product}
+          onChange={e => setProduct(e.target.value)}
+          placeholder="Product"
+          required
+        />
+        <input
+          type="date"
+          value={date}
+          onChange={e => setDate(e.target.value)}
+          required
+        />
+        <input
+          type="number"
+          value={quantity}
+          onChange={e => setQuantity(e.target.value)}
+          placeholder="Quantity"
+          required
+        />
+        <button type="submit">Submit</button>
+      </form>
+      <div>
+        <label>Filter by product:</label>
+        <input
+          type="text"
+          value={filter}
+          onChange={handleFilterChange}
+        />
+        <label>Sort by date:</label>
+        <select value={sortOrder} onChange={handleSortChange}>
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+        <button onClick={exportDataToCSV}>Export to CSV</button>
+        <input type="file" accept=".csv" onChange={importDataFromCSV} />
+      </div>
+      <Line data={chartData} />
     </div>
   );
 }
