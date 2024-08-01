@@ -40,6 +40,11 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [filter, setFilter] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [showResetForm, setShowResetForm] = useState(false);
+  const [oldUsername, setOldUsername] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [newUsername, setNewUsername] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -81,6 +86,18 @@ function App() {
     } catch (error) {
       console.error('Error submitting data:', error);
       toast.error('Failed to submit data.');
+    }
+  };
+
+  const handleReset = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API_URL}/reset`, { oldUsername, oldPassword, newUsername, newPassword });
+      toast.success('Credentials updated successfully!');
+      setShowResetForm(false);
+    } catch (error) {
+      console.error('Error resetting credentials:', error);
+      toast.error('Failed to reset credentials.');
     }
   };
 
@@ -191,6 +208,42 @@ function App() {
         </form>
       ) : (
         <>
+          <button onClick={() => setShowResetForm(!showResetForm)}>
+            {showResetForm ? 'Cancel' : 'Reset Credentials'}
+          </button>
+          {showResetForm && (
+            <form onSubmit={handleReset}>
+              <input
+                type="text"
+                value={oldUsername}
+                onChange={e => setOldUsername(e.target.value)}
+                placeholder="Old Username"
+                required
+              />
+              <input
+                type="password"
+                value={oldPassword}
+                onChange={e => setOldPassword(e.target.value)}
+                placeholder="Old Password"
+                required
+              />
+              <input
+                type="text"
+                value={newUsername}
+                onChange={e => setNewUsername(e.target.value)}
+                placeholder="New Username"
+                required
+              />
+              <input
+                type="password"
+                value={newPassword}
+                onChange={e => setNewPassword(e.target.value)}
+                placeholder="New Password"
+                required
+              />
+              <button type="submit">Submit</button>
+            </form>
+          )}
           <form onSubmit={handleSubmit}>
             <input
               type="text"
