@@ -168,9 +168,9 @@ function App() {
   };
 
   return (
-    <div className="App" style={{ backgroundColor: 'cyan' }}>
+    <div className="App">
       <ToastContainer />
-      <h1 style={{ color: 'blue', textShadow: '2px 2px 5px #000' }}>Production Visualizer</h1>
+      <h1>Production Visualizer</h1>
       {!isAuthenticated ? (
         <form onSubmit={handleLogin}>
           <input
