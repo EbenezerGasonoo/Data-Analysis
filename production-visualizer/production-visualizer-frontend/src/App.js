@@ -38,17 +38,16 @@ function App() {
   const [sortOrder, setSortOrder] = useState('asc');
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get(`${API_URL}/data`);
+        setData(result.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const result = await axios.get(`${API_URL}/data`);
-      setData(result.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -146,8 +145,8 @@ function App() {
   return (
     <div className="App">
       <ToastContainer />
-      <h1>Production Visualizer</h1>
-      <form onSubmit={handleSubmit}>
+      <h1 className="header">Production Visualizer</h1>
+      <form onSubmit={handleSubmit} className="form">
         <input
           type="text"
           value={product}
@@ -170,7 +169,7 @@ function App() {
         />
         <button type="submit">Submit</button>
       </form>
-      <div>
+      <div className="filters">
         <label>Filter by product:</label>
         <input
           type="text"
@@ -185,7 +184,7 @@ function App() {
         <button onClick={exportDataToCSV}>Export to CSV</button>
         <input type="file" accept=".csv" onChange={importDataFromCSV} />
       </div>
-      <Line data={chartData} />
+      <Line className="Line" data={chartData} />
     </div>
   );
 }

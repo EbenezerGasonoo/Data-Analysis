@@ -1,80 +1,70 @@
-/* App.css */
-
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #f0f8ff; /* Light blue background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
 .App {
   text-align: center;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-h1 {
-  font-size: 2.5em;
-  color: #1e90ff; /* DodgerBlue */
-  margin-bottom: 20px;
-}
-
-form {
+  background: linear-gradient(to right, #0066cc, #00ccff);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
-input[type="text"],
-input[type="date"],
-input[type="number"],
-input[type="password"],
-select {
-  padding: 10px;
-  margin: 10px 0;
+.header {
+  font-size: 3rem;
+  color: #ffffff;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 5px #333;
+}
+
+.form, .filters {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
   width: 80%;
-  max-width: 300px;
-  border: 2px solid #1e90ff;
-  border-radius: 4px;
-  font-size: 1em;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
+.form input, .filters input, .filters select, .filters button {
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 button {
-  background-color: #1e90ff;
+  background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 20px;
-  margin: 10px 0;
-  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 button:hover {
-  background-color: #1c86ee; /* Slightly darker blue */
+  background-color: #0056b3;
 }
 
-label {
-  font-size: 1.2em;
-  color: #333;
-  margin: 10px 0;
+input[type="file"] {
+  border: none;
 }
 
-.Toastify__toast {
-  font-size: 1em;
-}
-
-.Toastify__toast--success {
-  background-color: #32cd32; /* LimeGreen */
-}
-
-.Toastify__toast--error {
-  background-color: #ff6347; /* Tomato */
+.Line {
+  width: 80%;
+  max-width: 800px;
+  margin: 2rem auto;
+  box-sizing: border-box;
 }
