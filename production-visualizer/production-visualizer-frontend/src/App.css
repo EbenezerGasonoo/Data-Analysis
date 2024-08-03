@@ -1,70 +1,107 @@
-.App {
-  text-align: center;
-  background: linear-gradient(to right, #0066cc, #00ccff);
-  min-height: 100vh;
+body {
+  background: linear-gradient(135deg, #72EDF2 10%, #5151E5 100%);
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  padding: 2rem;
+  align-items: center;
   box-sizing: border-box;
 }
 
-.header {
-  font-size: 3rem;
-  color: #ffffff;
-  margin-bottom: 2rem;
-  text-shadow: 2px 2px 5px #333;
-}
-
-.form, .filters {
-  background: #ffffff;
-  padding: 2rem;
+.App {
+  background: #fff;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-  width: 80%;
-  max-width: 600px;
-  box-sizing: border-box;
-}
-
-.form input, .filters input, .filters select, .filters button {
-  margin: 0.5rem 0;
-  padding: 0.75rem;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.filters {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
+  color: #5151E5;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+form, .filters {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+input, select, button {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
 }
 
 button {
-  background-color: #007bff;
-  color: white;
+  background: #5151E5;
+  color: #fff;
   border: none;
-  padding: 0.75rem 1rem;
-  border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #333;
+}
+
+.Toastify__toast--success {
+  background: #4caf50;
+}
+
+.Toastify__toast--error {
+  background: #f44336;
+}
+
+.export-import {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.export-import button,
+.export-import input[type="file"] {
+  flex: 1;
+  margin-top: 10px;
+}
+
+.chart-container {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
   width: 100%;
   box-sizing: border-box;
 }
 
-button:hover {
-  background-color: #0056b3;
-}
+@media (max-width: 600px) {
+  form, .filters {
+    max-width: 100%;
+    padding: 10px;
+  }
 
-input[type="file"] {
-  border: none;
-}
+  .export-import {
+    flex-direction: column;
+  }
 
-.Line {
-  width: 80%;
-  max-width: 800px;
-  margin: 2rem auto;
-  box-sizing: border-box;
+  .chart-container {
+    padding: 10px;
+  }
 }

@@ -145,7 +145,7 @@ function App() {
   return (
     <div className="App">
       <ToastContainer />
-      <h1 className="header">Production Visualizer</h1>
+      <h1>Production Visualizer</h1>
       <form onSubmit={handleSubmit} className="form">
         <input
           type="text"
@@ -181,10 +181,14 @@ function App() {
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
-        <button onClick={exportDataToCSV}>Export to CSV</button>
-        <input type="file" accept=".csv" onChange={importDataFromCSV} />
+        <div className="export-import">
+          <button onClick={exportDataToCSV}>Export to CSV</button>
+          <input type="file" accept=".csv" onChange={importDataFromCSV} />
+        </div>
       </div>
-      <Line className="Line" data={chartData} />
+      <div className="chart-container">
+        <Line data={chartData} className="Line" />
+      </div>
     </div>
   );
 }
