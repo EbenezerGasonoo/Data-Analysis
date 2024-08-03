@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Papa from 'papaparse';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
+import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,13 +15,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import Papa from 'papaparse';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import './App.css';
 
-// Register the components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -51,6 +50,7 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Submitting data:', { product, date, quantity }); // Log the data being submitted
     try {
       const response = await axios.post(`${API_URL}/data`, { product, date, quantity });
       setData([...data, response.data]);
