@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Papa from 'papaparse';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import './App.css';
-import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,7 +10,13 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import Papa from 'papaparse';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
 
+// Register the components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -50,7 +51,6 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitting data:', { product, date, quantity }); // Log the data being submitted
     try {
       const response = await axios.post(`${API_URL}/data`, { product, date, quantity });
       setData([...data, response.data]);
@@ -145,49 +145,65 @@ function App() {
   return (
     <div className="App">
       <ToastContainer />
-      <h1>Production Visualizer</h1>
-      <form onSubmit={handleSubmit} className="form-section">
-        <input
-          type="text"
-          value={product}
-          onChange={e => setProduct(e.target.value)}
-          placeholder="Product"
-          required
-        />
-        <input
-          type="date"
-          value={date}
-          onChange={e => setDate(e.target.value)}
-          required
-        />
-        <input
-          type="number"
-          value={quantity}
-          onChange={e => setQuantity(e.target.value)}
-          placeholder="Quantity"
-          required
-        />
-        <button type="submit">Submit</button>
-      </form>
-      <div className="filter-section">
-        <label>Filter by product:</label>
-        <input
-          type="text"
-          value={filter}
-          onChange={handleFilterChange}
-        />
-        <label>Sort by date:</label>
-        <select value={sortOrder} onChange={handleSortChange}>
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
+      <div className="header">
+        <h1>Production Visualizer</h1>
       </div>
-      <div className="export-import-section">
-        <button onClick={exportDataToCSV}>Export to CSV</button>
-        <input type="file" accept=".csv" onChange={importDataFromCSV} />
-      </div>
-      <div className="chart-section">
-        <Line data={chartData} />
+      <div className="content">
+        <div className="form-container">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <input
+                type="text"
+                value={product}
+                onChange={e => setProduct(e.target.value)}
+                placeholder="Product"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="date"
+                value={date}
+                onChange={e => setDate(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="number"
+                value={quantity}
+                onChange={e => setQuantity(e.target.value)}
+                placeholder="Quantity"
+                required
+              />
+            </div>
+            <button type="submit" className="submit-button">Submit</button>
+          </form>
+        </div>
+        <div className="filter-container">
+          <div className="form-group">
+            <label>Filter by product:</label>
+            <input
+              type="text"
+              value={filter}
+              onChange={handleFilterChange}
+            />
+          </div>
+          <div className="form-group">
+            <label>Sort by date:</label>
+            <select value={sortOrder} onChange={handleSortChange}>
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <button onClick={exportDataToCSV} className="export-button">Export to CSV</button>
+            <input type="file" accept=".csv" onChange={importDataFromCSV} className="import-button" />
+          </div>
+        </div>
+        <div className="chart-container">
+          <Line data={chartData} />
+        </div>
       </div>
     </div>
   );
