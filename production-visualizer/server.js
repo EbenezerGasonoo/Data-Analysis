@@ -20,13 +20,13 @@ const productionSchema = new mongoose.Schema({
 const Production = mongoose.model('Production', productionSchema);
 
 app.post('/data', async (req, res) => {
-  console.log('Received data:', req.body); // Add this line to log the received data
+  console.log('Received data:', req.body);
   const productionData = new Production(req.body);
   try {
     await productionData.save();
     res.send(productionData);
   } catch (error) {
-    console.error('Error saving data:', error); // Add this line to log any errors
+    console.error('Error saving data:', error);
     res.status(500).send(error);
   }
 });
@@ -36,7 +36,27 @@ app.get('/data', async (req, res) => {
     const data = await Production.find();
     res.send(data);
   } catch (error) {
-    console.error('Error fetching data:', error); // Add this line to log any errors
+    console.error('Error fetching data:', error);
+    res.status(500).send(error);
+  }
+});
+
+app.put('/data/:id', async (req, res) => {
+  try {
+    const data = await Production.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.send(data);
+  } catch (error) {
+    console.error('Error updating data:', error);
+    res.status(500).send(error);
+  }
+});
+
+app.delete('/data/:id', async (req, res) => {
+  try {
+    await Production.findByIdAndDelete(req.params.id);
+    res.send({ message: 'Data deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting data:', error);
     res.status(500).send(error);
   }
 });

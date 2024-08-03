@@ -6,11 +6,13 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Line, Bar, Pie } from 'react-chartjs-2';
 import Papa from 'papaparse';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,6 +24,8 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend
@@ -36,6 +40,11 @@ function App() {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState('');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [chartType, setChartType] = useState('line');
+  const [editingId, setEditingId] = useState(null);
+  const [editingProduct, setEditingProduct] = useState('');
+  const [editingDate, setEditingDate] = useState('');
+  const [editingQuantity, setEditingQuantity] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,6 +132,50 @@ function App() {
     });
   };
 
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(`${API_URL}/data/${editingId}`, {
+        product: editingProduct,
+        date: editingDate,
+        quantity: editingQuantity,
+      });
+      const updatedData = data.map(item => item._id === editingId ? response.data : item);
+      setData(updatedData);
+      toast.success('Data updated successfully!');
+      cancelEditing();
+    } catch (error) {
+      console.error('Error updating data:', error);
+      toast.error('Failed to update data.');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/data/${id}`);
+      const updatedData = data.filter(item => item._id !== id);
+      setData(updatedData);
+      toast.success('Data deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting data:', error);
+      toast.error('Failed to delete data.');
+    }
+  };
+
+  const startEditing = (id, product, date, quantity) => {
+    setEditingId(id);
+    setEditingProduct(product);
+    setEditingDate(new Date(date).toISOString().substr(0, 10));
+    setEditingQuantity(quantity);
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditingProduct('');
+    setEditingDate('');
+    setEditingQuantity('');
+  };
+
   const filteredData = data.filter(d => d.product.includes(filter));
   const sortedData = filteredData.sort((a, b) => {
     if (sortOrder === 'asc') {
@@ -139,7 +192,21 @@ function App() {
       data: sortedData.map(d => d.quantity),
       borderColor: 'rgba(75,192,192,1)',
       borderWidth: 2,
+      backgroundColor: 'rgba(75,192,192,0.4)',
     }]
+  };
+
+  const renderChart = () => {
+    switch (chartType) {
+      case 'line':
+        return <Line data={chartData} />;
+      case 'bar':
+        return <Bar data={chartData} />;
+      case 'pie':
+        return <Pie data={chartData} />;
+      default:
+        return <Line data={chartData} />;
+    }
   };
 
   return (
@@ -201,12 +268,67 @@ function App() {
             <input type="file" accept=".csv" onChange={importDataFromCSV} className="import-button" />
           </div>
         </div>
-        <div className="chart-container">
-          <Line data={chartData} />
+        <div className="chart-controls">
+          <label>Chart Type:</label>
+          <select value={chartType} onChange={(e) => setChartType(e.target.value)}>
+            <option value="line">Line</option>
+            <option value="bar">Bar</option>
+            <option value="pie">Pie</option>
+          </select>
         </div>
+        <div className="chart-container">
+          {renderChart()}
+        </div>
+        <div className="data-table">
+          {sortedData.map(item => (
+            <div className="data-row" key={item._id}>
+              <span>{item.product}</span>
+              <span>{new Date(item.date).toLocaleDateString()}</span>
+              <span>{item.quantity}</span>
+              <button onClick={() => startEditing(item._id, item.product, item.date, item.quantity)}>Edit</button>
+              <button onClick={() => handleDelete(item._id)}>Delete</button>
+            </div>
+          ))}
+        </div>
+        {editingId && (
+          <div className="edit-form">
+            <h2>Edit Data</h2>
+            <form onSubmit={handleUpdate}>
+              <div className="form-group">
+                <input
+                  type="text"
+                  value={editingProduct}
+                  onChange={e => setEditingProduct(e.target.value)}
+                  placeholder="Product"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="date"
+                  value={editingDate}
+                  onChange={e => setEditingDate(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="number"
+                  value={editingQuantity}
+                  onChange={e => setEditingQuantity(e.target.value)}
+                  placeholder="Quantity"
+                  required
+                />
+              </div>
+              <button type="submit" className="submit-button">Update</button>
+              <button type="button" onClick={cancelEditing} className="cancel-button">Cancel</button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 export default App;
+
