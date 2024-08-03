@@ -16,6 +16,7 @@ import { Line, Bar, Pie } from 'react-chartjs-2';
 import Papa from 'papaparse';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Button, TextField, Container, Card, CardContent, Select, MenuItem } from '@mui/material';
 import './App.css';
 
 // Register the components
@@ -210,125 +211,160 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <ToastContainer />
+    <Container className="App">
+      <ToastContainer className="toast-container" />
       <div className="header">
         <h1>Production Visualizer</h1>
       </div>
       <div className="content">
-        <div className="form-container">
-          <form onSubmit={handleSubmit}>
+        <Card className="form-container">
+          <CardContent>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <TextField
+                  label="Product"
+                  value={product}
+                  onChange={e => setProduct(e.target.value)}
+                  required
+                  fullWidth
+                />
+              </div>
+              <div className="form-group">
+                <TextField
+                  type="date"
+                  value={date}
+                  onChange={e => setDate(e.target.value)}
+                  required
+                  fullWidth
+                />
+              </div>
+              <div className="form-group">
+                <TextField
+                  label="Quantity"
+                  type="number"
+                  value={quantity}
+                  onChange={e => setQuantity(e.target.value)}
+                  required
+                  fullWidth
+                />
+              </div>
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                Submit
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+        <Card className="filter-container">
+          <CardContent>
             <div className="form-group">
-              <input
-                type="text"
-                value={product}
-                onChange={e => setProduct(e.target.value)}
-                placeholder="Product"
-                required
+              <TextField
+                label="Filter by product"
+                value={filter}
+                onChange={handleFilterChange}
+                fullWidth
               />
             </div>
             <div className="form-group">
-              <input
-                type="date"
-                value={date}
-                onChange={e => setDate(e.target.value)}
-                required
-              />
+              <Select
+                value={sortOrder}
+                onChange={handleSortChange}
+                fullWidth
+              >
+                <MenuItem value="asc">Ascending</MenuItem>
+                <MenuItem value="desc">Descending</MenuItem>
+              </Select>
             </div>
             <div className="form-group">
-              <input
-                type="number"
-                value={quantity}
-                onChange={e => setQuantity(e.target.value)}
-                placeholder="Quantity"
-                required
-              />
+              <Button onClick={exportDataToCSV} variant="contained" color="secondary" fullWidth>
+                Export to CSV
+              </Button>
+              <input type="file" accept=".csv" onChange={importDataFromCSV} className="import-button" />
             </div>
-            <button type="submit" className="submit-button">Submit</button>
-          </form>
-        </div>
-        <div className="filter-container">
-          <div className="form-group">
-            <label>Filter by product:</label>
-            <input
-              type="text"
-              value={filter}
-              onChange={handleFilterChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Sort by date:</label>
-            <select value={sortOrder} onChange={handleSortChange}>
-              <option value="asc">Ascending</option>
-              <option value="desc">Descending</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <button onClick={exportDataToCSV} className="export-button">Export to CSV</button>
-            <input type="file" accept=".csv" onChange={importDataFromCSV} className="import-button" />
-          </div>
-        </div>
-        <div className="chart-controls">
-          <label>Chart Type:</label>
-          <select value={chartType} onChange={(e) => setChartType(e.target.value)}>
-            <option value="line">Line</option>
-            <option value="bar">Bar</option>
-            <option value="pie">Pie</option>
-          </select>
-        </div>
-        <div className="chart-container">
-          {renderChart()}
-        </div>
+          </CardContent>
+        </Card>
+        <Card className="chart-controls">
+          <CardContent>
+            <TextField
+              select
+              label="Chart Type"
+              value={chartType}
+              onChange={(e) => setChartType(e.target.value)}
+              fullWidth
+            >
+              <MenuItem value="line">Line</MenuItem>
+              <MenuItem value="bar">Bar</MenuItem>
+              <MenuItem value="pie">Pie</MenuItem>
+            </TextField>
+          </CardContent>
+        </Card>
+        <Card className="chart-container">
+          <CardContent>
+            {renderChart()}
+          </CardContent>
+        </Card>
         <div className="data-table">
           {sortedData.map(item => (
-            <div className="data-row" key={item._id}>
-              <span>{item.product}</span>
-              <span>{new Date(item.date).toLocaleDateString()}</span>
-              <span>{item.quantity}</span>
-              <button onClick={() => startEditing(item._id, item.product, item.date, item.quantity)}>Edit</button>
-              <button onClick={() => handleDelete(item._id)}>Delete</button>
-            </div>
+            <Card key={item._id} className="data-row">
+              <CardContent>
+                <span>{item.product}</span>
+                <span>{new Date(item.date).toLocaleDateString()}</span>
+                <span>{item.quantity}</span>
+                <Button onClick={() => startEditing(item._id, item.product, item.date, item.quantity)} variant="contained">
+                  Edit
+                </Button>
+                <Button onClick={() => handleDelete(item._id)} variant="contained" color="error">
+                  Delete
+                </Button>
+              </CardContent>
+            </Card>
           ))}
         </div>
         {editingId && (
-          <div className="edit-form">
-            <h2>Edit Data</h2>
-            <form onSubmit={handleUpdate}>
-              <div className="form-group">
-                <input
-                  type="text"
-                  value={editingProduct}
-                  onChange={e => setEditingProduct(e.target.value)}
-                  placeholder="Product"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <input
-                  type="date"
-                  value={editingDate}
-                  onChange={e => setEditingDate(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <input
-                  type="number"
-                  value={editingQuantity}
-                  onChange={e => setEditingQuantity(e.target.value)}
-                  placeholder="Quantity"
-                  required
-                />
-              </div>
-              <button type="submit" className="submit-button">Update</button>
-              <button type="button" onClick={cancelEditing} className="cancel-button">Cancel</button>
-            </form>
-          </div>
+          <Card className="edit-form">
+            <CardContent>
+              <h2>Edit Data</h2>
+              <form onSubmit={handleUpdate}>
+                <div className="form-group">
+                  <TextField
+                    label="Product"
+                    value={editingProduct}
+                    onChange={e => setEditingProduct(e.target.value)}
+                    required
+                    fullWidth
+                  />
+                </div>
+                <div className="form-group">
+                  <TextField
+                    type="date"
+                    value={editingDate}
+                    onChange={e => setEditingDate(e.target.value)}
+                    required
+                    fullWidth
+                  />
+                </div>
+                <div className="form-group">
+                  <TextField
+                    label="Quantity"
+                    type="number"
+                    value={editingQuantity}
+                    onChange={e => setEditingQuantity(e.target.value)}
+                    required
+                    fullWidth
+                  />
+                </div>
+                <Button type="submit" variant="contained" color="primary" fullWidth>
+                  Update
+                </Button>
+                <Button type="button" onClick={cancelEditing} variant="outlined" fullWidth>
+                  Cancel
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         )}
       </div>
-    </div>
+    </Container>
   );
 }
 
 export default App;
-

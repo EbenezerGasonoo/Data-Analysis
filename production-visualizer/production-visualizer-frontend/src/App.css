@@ -1,171 +1,95 @@
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 body {
   font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #43cea2, #185a9d);
-  color: #333;
-  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #36d1dc, #5b86e5);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 20px;
+  align-items: center;
+  height: 100vh;
 }
 
 .App {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 20px;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .header h1 {
-  font-size: 2.5em;
-  color: #fff;
+  color: #333;
 }
 
 .content {
-  width: 100%;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-}
-
-.form-container, .filter-container, .chart-container {
-  margin-bottom: 20px;
-}
-
-.form-container, .filter-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 20px;
 }
 
+.form-container, .filter-container, .edit-form, .chart-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .form-group {
-  margin-bottom: 15px;
-  flex: 1;
-  min-width: 250px;
+  display: flex;
+  gap: 10px;
 }
 
 .form-group input, .form-group select, .form-group button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.form-group button {
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-.form-group button:hover {
-  background-color: #218838;
-}
-
-.export-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.export-button:hover {
-  background-color: #0056b3;
+  flex: 1;
 }
 
 .import-button {
-  padding: 0;
+  margin-top: 10px;
 }
 
 .chart-container {
   width: 100%;
+  margin-top: 20px;
+}
+
+.chart-container canvas {
+  width: 100% !important;
 }
 
 .data-table {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .data-row {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #ccc;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .data-row span {
   flex: 1;
-  text-align: center;
 }
 
 .data-row button {
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  cursor: pointer;
   margin-left: 10px;
 }
 
-.data-row button:hover {
-  background-color: #c82333;
-}
-
-.edit-form {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.edit-form h2 {
-  margin-bottom: 20px;
-}
-
-.edit-form .form-group {
-  margin-bottom: 15px;
-}
-
-.edit-form .form-group input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.edit-form .submit-button {
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-.edit-form .submit-button:hover {
-  background-color: #218838;
-}
-
-.edit-form .cancel-button {
-  background-color: #6c757d;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-.edit-form .cancel-button:hover {
-  background-color: #5a6268;
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
 }
