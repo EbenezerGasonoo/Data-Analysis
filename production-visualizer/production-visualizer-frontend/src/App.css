@@ -1,107 +1,66 @@
-body {
-  background: linear-gradient(135deg, #72EDF2 10%, #5151E5 100%);
-  font-family: 'Roboto', sans-serif;
-  color: #333;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-}
-
 .App {
-  background: #fff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 1200px;
+  text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
+  justify-content: center;
 }
 
 h1 {
-  text-align: center;
-  color: #5151E5;
+  font-size: 2.5rem;
   margin-bottom: 20px;
-  width: 100%;
+  color: #333;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-form, .filters {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
-  width: 100%;
+.form-section, .filter-section, .export-import-section, .chart-section {
+  background: white;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 1200px; /* Increased width for larger screens */
 }
 
-input, select, button {
+.form-section input, .filter-section input, .filter-section select {
+  width: calc(100% - 20px);
   padding: 10px;
-  border: 1px solid #ddd;
+  margin: 10px 0;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
-  width: 100%;
 }
 
 button {
-  background: #5151E5;
-  color: #fff;
+  padding: 10px 20px;
+  margin-top: 10px;
   border: none;
+  border-radius: 5px;
+  background-color: #5a67d8;
+  color: white;
   cursor: pointer;
-  transition: background 0.3s ease;
+  font-size: 1rem;
 }
 
 button:hover {
-  background: #333;
+  background-color: #434190;
 }
 
-.Toastify__toast--success {
-  background: #4caf50;
-}
-
-.Toastify__toast--error {
-  background: #f44336;
-}
-
-.export-import {
+.export-import-section {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
 }
 
-.export-import button,
-.export-import input[type="file"] {
-  flex: 1;
+.export-import-section input[type="file"] {
   margin-top: 10px;
 }
 
-.chart-container {
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+.chart-section {
+  margin-top: 30px;
   width: 100%;
-  box-sizing: border-box;
-}
-
-@media (max-width: 600px) {
-  form, .filters {
-    max-width: 100%;
-    padding: 10px;
-  }
-
-  .export-import {
-    flex-direction: column;
-  }
-
-  .chart-container {
-    padding: 10px;
-  }
 }

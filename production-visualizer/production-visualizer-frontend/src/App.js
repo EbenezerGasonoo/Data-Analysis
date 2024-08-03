@@ -146,7 +146,7 @@ function App() {
     <div className="App">
       <ToastContainer />
       <h1>Production Visualizer</h1>
-      <form onSubmit={handleSubmit} className="form">
+      <form onSubmit={handleSubmit} className="form-section">
         <input
           type="text"
           value={product}
@@ -169,7 +169,7 @@ function App() {
         />
         <button type="submit">Submit</button>
       </form>
-      <div className="filters">
+      <div className="filter-section">
         <label>Filter by product:</label>
         <input
           type="text"
@@ -181,13 +181,13 @@ function App() {
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
-        <div className="export-import">
-          <button onClick={exportDataToCSV}>Export to CSV</button>
-          <input type="file" accept=".csv" onChange={importDataFromCSV} />
-        </div>
       </div>
-      <div className="chart-container">
-        <Line data={chartData} className="Line" />
+      <div className="export-import-section">
+        <button onClick={exportDataToCSV}>Export to CSV</button>
+        <input type="file" accept=".csv" onChange={importDataFromCSV} />
+      </div>
+      <div className="chart-section">
+        <Line data={chartData} />
       </div>
     </div>
   );
