@@ -211,8 +211,8 @@ function App() {
   };
 
   return (
-    <Container className="App">
-      <ToastContainer className="toast-container" />
+    <Container maxWidth="md" className="App">
+      <ToastContainer />
       <div className="header">
         <h1>Production Visualizer</h1>
       </div>
@@ -275,7 +275,7 @@ function App() {
               </Select>
             </div>
             <div className="form-group">
-              <Button onClick={exportDataToCSV} variant="contained" color="secondary" fullWidth>
+              <Button onClick={exportDataToCSV} variant="contained" color="secondary">
                 Export to CSV
               </Button>
               <input type="file" accept=".csv" onChange={importDataFromCSV} className="import-button" />
